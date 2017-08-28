@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/main.css">
+  </head>
+  <body>
+    <h1>ふぉろわーばっくあっぷったー v0.1β</h1>
+    <div class="main">
+      <div class="text">
+      ここ最近，Twitterで有名絵師さんが凍結される事件が発生しています．<br>
+      いつ凍結されるかひやひやしている方もいらっしゃるのではないでしょうか．<br>
+      そこで，フォローしている人一覧をダウンロード出来るサービスを作りました．<br>
+      まだベータ版でもしかしたら不具合等があるかもしれません．<br>
+      もし何かありましたら,<a href="http://twitter.com/kawakawaritsuki">@kawakawaritsuki</a>まで一言いただけますと嬉しいです．<br>
+      <br>
+      また，もちろんですがこのツールでのログインでは書込や，記録など一切していませんのでご安心下さい．<br>
+      一人でも被害者が減る事を祈っています．<br>
+      <br>
+      <h3>CSV形式でダウンロードボタンは1度しか押さないで下さい．時間がかかりますので気長にお待ち下さい．</h3>
+      </div>
+      <h2>取得件数: <%= @follower.count %>件</h2>
+      <div class="buttons">
+        <button type="button" class="btn btn-success btn-lg" onclick="location.href='/csv';">CSV形式でダウンロード</button><br>
+        <button type="button" class="btn btn-primary btn-lg" onclick="location.href='/logout'">ログアウト</button>
+      </div>
+      <h2>▼あなたがフォローしている人たち</h2> 
+      <div id="open">
+        <% @follower.each do |user| %>
+          <%= user.name %> by @<%= user.screen_name %> id:<%= user.id %><hr>
+        <% end %>
+      </div>
+    </div>
+    <div id="footer">
+      こぴーらいと 2017 <a href="http://twitter.com/kawakawaritsuki">@kawakawaritsuki</a>
+    </div>
+  </body>
+</html>

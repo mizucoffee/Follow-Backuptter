@@ -1,0 +1,60 @@
+body{
+  width:100%;
+  background-image: url("../back.png");
+  background-repeat: repeat;
+}
+
+h1{
+  text-align: center;
+  margin:24px;
+}
+
+
+h2{
+  margin-top: 24px;
+  text-align: center;
+}
+
+
+h3{
+  text-align: center;
+}
+
+.buttons{
+  text-align:center !important;
+  margin:8px;
+}
+
+button{
+  margin:4px;
+}
+
+.main{
+  max-width: 1020px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+#open{
+  border-radius: 1em; 
+  padding: 24px;
+  background-color:#eee;
+}
+
+.text{
+  text-align:center !important;
+}
+
+#footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 24px;
+  text-align: center;
+  background-color:#222;
+  color:#fff;
+}
+
+#footer a {
+  color:#fff;
+}
