@@ -31,62 +31,54 @@ configRoutes = function(app, server, passport) {
     var cursor = -1;
     var users = [];
     
-    var done = function(u,c){
-      cursor = c;
-      users = u;
-      console.log("next_cursor:" + c);
-
-      if(c == 0){
-        getLookup(client,users,function(usersData){
-          console.log("RETURN");
-          req.session.list = usersData;
-          res.send(usersData);
-        });
+    var done = function(data){
+      cursor = data.cursor;
+      console.log("next_cursor:" + cursor);
+      users = data.users;
+      if(data.cursor == 0){
+        req.session.list = data.users;
+        res.send(data.users);
       }else{
-        getIds(client,cursor,users,done);
+        var a = get(client,cursor,users,done);
       }
     };
 
-    getIds(client,cursor,users,done);
+    var a = get(client,cursor,users,done);
   });
 
   //next_cursor
 
-  function getIds(client,cursor,users,done){
-    client.get('friends/ids', {"screen_name":"kawakawaritsuki","cursor":cursor}, function(error, data, response){
+  function get(client,cursor,users,done){
+    client.get('friends/ids', {"screen_name":"parusy168","cursor":cursor}, function(error, data, response){
       if (!error) {
-         Array.prototype.push.apply(users,data.ids);
-         done(users,data.next_cursor);
+           console.log("next_cursor:" + data.next_cursor);
+
+         var b = data.ids.length, cnt = 100,newArr = [];
+         for(var i = 0; i < Math.ceil(b / cnt); i++) {
+           var j = i * cnt;
+           var p = data.ids.slice(j, j + cnt);
+           newArr.push(p);
+         }
+         var process = []
+
+         newArr.forEach(function(element,index,array){
+           process.push(function(callback){
+             client.get('users/lookup',{user_id:element.join(',')},function(e,d,r){
+               callback(e,d);
+             });
+           });
+         });
+
+         async.series(process,function(err,results){
+           if(err) throw err;
+           results.forEach(function(u){
+             Array.prototype.push.apply(users,u);
+           });
+           done({users:users,cursor:data.next_cursor});
+         });
        };
     });
   };
-
-  function getLookup(client,users,done){
-    var b = users.length, cnt = 100,newArr = [];
-    for(var i = 0; i < Math.ceil(b / cnt); i++) {
-      var j = i * cnt;
-      var p = users.slice(j, j + cnt);
-      newArr.push(p);
-    }
-
-    var process = []
-    newArr.forEach(function(element,index,array){
-      process.push(function(callback){
-        client.get('users/lookup',{user_id:element.join(',')},function(e,d,r){
-          callback(e,d);
-        });
-      });
-    });
-
-    async.series(process,function(err,results){
-      if(err) throw err;
-      var res = [];
-      results.forEach(function(u){
-        Array.prototype.push.apply(res,u);
-      });
-      done(res);
-    });
-  }
 
   app.get('/api/reload', function(req, res){
     if(!req.hasOwnProperty("user")) {res.redirect("/"); return;}

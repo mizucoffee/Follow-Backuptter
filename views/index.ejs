@@ -3,34 +3,110 @@
 <html>
   <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <meta charset="UTF-8">
     <link rel="stylesheet" href="/main.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/superagent/3.6.0/superagent.min.js"></script>
+    <meta charset="UTF-8">
+    <script type="text/javascript">
+      function reload(){
+         $("#loading").fadeIn();
+         superagent.get("/api/reload").end(function(err,res){
+          document.getElementById("text").innerText = "";
+          res.body.forEach(function(user){
+            var container = document.createElement('div');
+            var box = document.createElement('div');
+            var boxf = document.createElement('div');
+            var img = document.createElement('img');
+
+            img.src = user.profile_image_url;
+            boxf.innerText = user.name + " by @" + user.screen_name + " id:" + user.id;
+            boxf.classList.add("box");
+            boxf.classList.add("text-float");
+            box.appendChild(img);
+            box.classList.add("box");
+
+            container.classList.add("boxContainer")
+            container.appendChild(box);
+            container.appendChild(boxf);
+
+            document.getElementById("text").appendChild(container);
+            document.getElementById("text").appendChild(document.createElement('hr'));
+          });
+          $("#loading").fadeOut();
+        });
+      
+      }
+    </script>
   </head>
   <body>
-    <h1>ふぉろーばっくあっぷったーbeta v0.2</h1>
+    <h1>ふぉろーばっくあっぷったーbeta v0.1.1</h1>
     <div class="main">
 
       <div id="user">
         <div id="your-data">あなたの情報</div>
-        <img src="<%- profile.profile_image_url.replace( /_normal/g , "" ) %>" width="128px">
-        <div id="name" class="overflow-text"><%- profile.name %></div>
-        <div id="screen_name" class="overflow-text">@<%- profile.screen_name %></div>
+        <img id="user-img" src="" width="128px">
+        <div id="user-name" class="overflow-text"></div>
+        <div id="user-screen_name" class="overflow-text"></div>
       </div>
 
-      <h2>取得件数: XXX件</h2>
+      <h2 id="count">取得件数: XX件</h2>
       <div class="buttons">
-        <button type="button" class="btn btn-success btn-lg" onclick="location.href='/csv';">CSV形式でダウンロード</button><br>
-        <button type="button" class="btn btn-primary btn-lg" onclick="location.href='/logout'">ログアウト</button>
+        <button type="button" class="btn btn-success btn-lg" onclick="location.href='/api/csv';">CSV形式でダウンロード</button><br>
+        <button type="button" class="btn btn-info btn-lg" onclick="reload();">再取得</button><br>
+        <button type="button" class="btn btn-primary btn-lg" onclick="location.href='/api/logout'">ログアウト</button>
       </div>
       <h2>▼あなたがフォローしている人たち</h2> 
-      <div class="open">
-        <% users.forEach(function(user, index, array){ %>
-          <%= user.name %> by @<%= user.screen_name %> id:<%= user.id %><hr>
-        <% }) %>
+      <div class="text" id="text">
+      </div>
+    </div>
+    <div id="loading">
+      <div id="loading-back"></div>
+      <div id="loading-window">
+        <img src="/gif-load.gif"/><br>
+        読み込み中
       </div>
     </div>
     <div id="footer">
       こぴーらいと 2017 <a href="http://twitter.com/kawakawaritsuki">@kawakawaritsuki</a>
     </div>
+    <script type="text/javascript">
+      superagent.get("/api/user_data")
+      .end(function(err,res){
+        if(!!err){console.log("error");}
+        document.getElementById("user-name").innerHTML = res.body.name;
+        document.getElementById("user-screen_name").innerHTML = res.body.screen_name;
+        document.getElementById("user-img").src = res.body.profile_image_url.replace( /_normal/g , "" ) ;
+        
+//        document.getElementById("loading").classList.add("clear");
+
+        superagent.get("/api/list")
+        .timeout({response:3600000})
+        .end(function(err,res){
+          document.getElementById("count").innerText = "取得件数: " + res.body.length+"件";
+          res.body.forEach(function(user){
+            var container = document.createElement('div');
+            var box = document.createElement('div');
+            var boxf = document.createElement('div');
+            var img = document.createElement('img');
+
+            img.src = user.profile_image_url;
+            boxf.innerText = user.name + " by @" + user.screen_name + " id:" + user.id;
+            boxf.classList.add("box");
+            boxf.classList.add("text-float");
+            box.appendChild(img);
+            box.classList.add("box");
+
+            container.classList.add("boxContainer")
+            container.appendChild(box);
+            container.appendChild(boxf);
+
+            document.getElementById("text").appendChild(container);
+            document.getElementById("text").appendChild(document.createElement('hr'));
+          });
+          $("#loading").fadeOut();
+        });
+
+      });
+    </script>
   </body>
 </html>
