@@ -77,34 +77,37 @@
         document.getElementById("user-screen_name").innerHTML = res.body.screen_name;
         document.getElementById("user-img").src = res.body.profile_image_url.replace( /_normal/g , "" ) ;
         
-//        document.getElementById("loading").classList.add("clear");
+        document.getElementById("loading").classList.add("clear");
 
-        superagent.get("/api/list")
-        .timeout({response:3600000})
-        .end(function(err,res){
-          document.getElementById("count").innerText = "取得件数: " + res.body.length+"件";
-          res.body.forEach(function(user){
-            var container = document.createElement('div');
-            var box = document.createElement('div');
-            var boxf = document.createElement('div');
-            var img = document.createElement('img');
+//        superagent.get("/api/list")
+//        .timeout({response:3600000})
+//        .end(function(err,res){
+//          document.getElementById("count").innerText = "取得件数: " + res.body.length+"件";
+//          res.body.forEach(function(user){
+//            var container = document.createElement('div');
+//            var box = document.createElement('div');
+//            var boxf = document.createElement('div');
+//            var img = document.createElement('img');
 
-            img.src = user.profile_image_url;
-            boxf.innerText = user.name + " by @" + user.screen_name + " id:" + user.id;
-            boxf.classList.add("box");
-            boxf.classList.add("text-float");
-            box.appendChild(img);
-            box.classList.add("box");
+//            img.src = user.profile_image_url;
+//            boxf.innerText = user.name + " by @" + user.screen_name + " id:" + user.id;
+//            boxf.classList.add("box");
+//            boxf.classList.add("text-float");
+//            box.appendChild(img);
+//            box.classList.add("box");
 
-            container.classList.add("boxContainer")
-            container.appendChild(box);
-            container.appendChild(boxf);
+//            container.classList.add("boxContainer")
+//            container.appendChild(box);
+//            container.appendChild(boxf);
 
-            document.getElementById("text").appendChild(container);
-            document.getElementById("text").appendChild(document.createElement('hr'));
-          });
-          $("#loading").fadeOut();
-        });
+//            document.getElementById("text").appendChild(container);
+//            document.getElementById("text").appendChild(document.createElement('hr'));
+//          });
+
+
+//          $("#loading").fadeOut();
+
+//        });
 
       });
     </script>

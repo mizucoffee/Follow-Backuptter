@@ -53,7 +53,7 @@ configRoutes = function(app, server, passport) {
   //next_cursor
 
   function getIds(client,cursor,users,done){
-    client.get('friends/ids', {"screen_name":"kawakawaritsuki","cursor":cursor}, function(error, data, response){
+    client.get('friends/ids', {"stringify_ids":true,"cursor":cursor}, function(error, data, response){
       if (!error) {
          Array.prototype.push.apply(users,data.ids);
          done(users,data.next_cursor);

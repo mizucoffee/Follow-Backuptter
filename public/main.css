@@ -140,27 +140,15 @@ button{
   z-index: 2;
 }
 
-@-webkit-keyframes fadeOut {
-  0% {opacity: 1;display:inline}
-  99% {opacity: 0;display:inline}
-  100% {display: none}
-}
-
 @keyframes fadeOut {
-  0% {opacity: 1;display:inline}
-  99% {opacity: 0;display:inline}
+  0% {opacity: 1}
+  99% {opacity: 0}
   100% {display: none}
 }
-
 
 .clear{
-  -webkit-animation-name: fadeOut;
-  -webkit-animation-duration: 1s;
-  -webkit-animation-fill-mode: forwards;
-  -webkit-animation-timing-function: ease-out;
   animation-name: fadeOut;
   animation-duration: 1s;
-  animation-fill-mode: both;
+  animation-fill-mode: forwards;
   animation-timing-function: ease-out;
-  display: none;
 }
