@@ -1,39 +1,63 @@
 body{
-  width:100%;
+  margin: 24px 16px;
+  text-align: center;
   background-image: url("../back.png");
   background-repeat: repeat;
 }
 
 h1{
   text-align: center;
-  margin-top:24px;
+  font-family: "Noto Sans Japanese";
 }
-
 
 h2{
+  margin: 0;
   text-align: center;
+  font-family: "Noto Sans Japanese";
+  margin-bottom: 8px;
 }
 
-
-h3{
-  text-align: center;
+a {
+  text-decoration: none;
 }
 
-.buttons{
-  margin:8px;
+a:hover {
+  text-decoration: underline;
 }
 
-button{
-  margin:4px;
+.btn {
+  position: relative;
+  background-color: #D0D0D0;
+  border-radius: 8px;
+  font-size: 20px;
+  line-height: 62px;
+  color: #FFFFFF;
+  padding: 12px 20px;
 }
 
-.main{
-  padding: 16px;
-  text-align: center;
+.btn:hover {
+  background-color: #D0D0D0;
+  color: #FFFFFF;
 }
 
-.text{
-  margin: 12px auto;
+.btn:active {
+  top: 3px;
+  box-shadow: none;
+}
+
+.btn-blue { background-color: #3D7EEF; }
+.btn-blue:hover { background-color: #2A6DBF; }
+
+.btn-green { background-color: #05A556; }
+.btn-green:hover { background-color: #008249; }
+
+.btn-light-blue { background-color: #1DA4BA; }
+.btn-light-blue:hover { background-color: #116C7B; }
+
+main{width: 100%;}
+
+section {
+  margin: 24px auto;
   max-width: 1024px;
   text-align:left;
   font-size:18px;
@@ -42,31 +66,37 @@ button{
   background-color:#eee;
 }
 
-#footer {
+hr{
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding-left: 8px;
+  border: 0;
+  border-top: 1px solid rgba(0,0,0,.1);
+}
+
+footer {
   position: fixed;
   bottom: 0;
-  width: 100%;
+  left: 0;
+  width: 100%; 
   height: 24px;
   text-align: center;
   background-color:#222;
-  color:#fff;
+  color:#eee;
   z-index: 2;
 }
 
-#footer a {
+footer a {
   color:#fff;
 }
 
-#user{
-  margin: 12px auto;
-  border-radius: 1em;
-  padding: 24px;
-  background-color:#eee;
+.user{
+  text-align: center;
   max-width: 360px;
 }
 
-#your-data{
-  font-size:24px;
+.user img{
+  width: 128px;
 }
 
 #user-name{
@@ -86,6 +116,8 @@ button{
 }
 
 .boxContainer{
+  margin: 16px 0;
+  height: 48px;
   overflow: hidden;
 }
 
@@ -100,13 +132,13 @@ button{
 }
 
 .text-float{
-  height:48px;
+  width: calc(100% - 64px);
   line-height:32px;
   padding: 8px;
 }
 
 #loading {
-  position: absolute;
+  position: fixed;
   top: 0px;
   left: 0px;
   width: 100%;
@@ -115,7 +147,7 @@ button{
 }
 
 #loading-back {
-  position: absolute;
+  position: fixed;
   background-color: #fff;
   opacity: 0.8;
   top: 0px;
@@ -126,17 +158,16 @@ button{
 }
 
 #loading-window {
-  position: absolute;
-  top: calc(50% - 136px / 2);
-  left: calc(50% - 138px / 2);
-  width: 138px;
-  height: 136px;
+  position: fixed;
+  top: calc(50% - 149px / 2);
+  left: calc(50% - 146px / 2);
+  width: 90px;
+  height: 101px;
   text-align: center;
   font-size: 18px;
   border-radius: 1em;
-  padding: 24px;
+  padding: 28px 28px 20px 28px ;
   background-color: #eee;
-  padding-bottom: 18px;
   z-index: 2;
 }
 

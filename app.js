@@ -1,5 +1,7 @@
 'use strict';
-const express = require("express"),
+const
+  config = require('config'),
+  express = require("express"),
   session = require('express-session'),
   auth = require('./passport'),
   passport = auth.passport,
@@ -12,16 +14,18 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static('public'));
 
+app.disable('x-powered-by');
+
 app.set('view engine', 'ejs');
 
-const server = app.listen(30001, function () {
+const server = app.listen(process.env.PORT || config.get('server.port'), function () {
   console.log("Node.js is listening to PORT:" + server.address().port);
 });
 
 // ==========================================================
 
 app.get("/", function (req, res, next) {
-  res.render("login", {});
+  res.render("login", {"name":config.get("server.name"),"ver":config.get("server.version")});
 });
 
 app.get('/auth/twitter', passport.authenticate('twitter'));
@@ -30,7 +34,7 @@ app.get('/auth/twitter/callback', passport.authenticate('twitter', { successRedi
 
 app.get('/list', function (req, res) {
   if (!req.hasOwnProperty("user")) { res.redirect("/"); return; }
-  res.render("index", {});
+  res.render("index", {"name":config.get("server.name"),"ver":config.get("server.version")});
 });
 
 app.get('/api/list', function (req, res) {
@@ -69,7 +73,8 @@ app.get('/api/list', function (req, res) {
 //next_cursor
 
 function getIds(client, cursor, users, done) {
-  client.get('friends/ids', { "screen_name":"parusy168","stringify_ids": true, "cursor": cursor }, function (error, data, response) {
+  // client.get('friends/ids', { "screen_name":"parusy168","stringify_ids": true, "cursor": cursor }, function (error, data, response) {
+  client.get('friends/ids', { "stringify_ids": true, "cursor": cursor }, function (error, data, response) {
     if (!error) {
       console.log("GET IDS");
       Array.prototype.push.apply(users, data.ids);
@@ -87,6 +92,7 @@ function getLookup(client, users, done) {
   }
 
   var process = []
+
   var i = 0;
   newArr.forEach(function (element, index, array) {
     process.push(function (callback) {

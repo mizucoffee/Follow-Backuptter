@@ -1,4 +1,6 @@
-const passport = require('passport'),
+const
+  config = require('config'),
+  passport = require('passport'),
   TwitterStrategy = require('passport-twitter').Strategy;
 
 var users={}
@@ -16,9 +18,9 @@ passport.deserializeUser(function(id, done) {
 });
 
 passport.use(new TwitterStrategy({
-    consumerKey: process.env.CONSUMER_KEY,
-    consumerSecret: process.env.CONSUMER_SECRET,
-    callbackURL: "http://192.168.50.49:30001/auth/twitter/callback"
+    consumerKey: config.get('api-keys.twitter.ck'),
+    consumerSecret: config.get('api-keys.twitter.cs'),
+    callbackURL: `http://${config.get('server.domain')}:${config.get('server.port')}/auth/twitter/callback`
   },
   function(token, tokenSecret, profile, done) {    
     profile.token = token;
