@@ -20,7 +20,7 @@
 </head>
 
 <body>
-  <h1>
+  <h1 class="overflow-text">
     <%- name %> v
       <%- ver %>
   </h1>
@@ -33,15 +33,24 @@
       <div id="user-screen_name" class="overflow-text"></div>
     </section>
 
-    <h2 id="count">取得件数: 件</h2>
-    <div class="buttons">
-      <a class="btn btn-green" href="/api/csv">CSV形式でダウンロード</a><br>
-      <a class="btn btn-light-blue" href="javascript:reload();">再取得</a><br>
-      <a class="btn btn-blue" href="/api/logout">ログアウト</a>
-    </div>
-    <section>
-      <h2>▼あなたがフォローしている人たち</h2>
+    <h2 id="follow-count">フォロー数: 件</h2>
+    <h2 id="get-count">　取得件数: 件</h2><br>
+    <a class="btn btn-green" href="javascript:csv();">CSV形式でダウンロード</a><br>
+    <a class="btn btn-light-blue" href="javascript:reload();">再取得</a><br>
+    <a class="btn btn-blue" href="/api/logout">ログアウト</a>
+    <section id="top">
+      <div class="follow-you">
+        <a class="btn btn-light-blue btn-menu" href="javascript:back();">戻る</a>
+        <h2 id="top-h2" class="overflow-text">▼あなたがフォローしている人たち Page:1</h2>
+        <a class="btn btn-light-blue btn-menu" href="javascript:next();">進む</a>
+      </div>
       <div id="text">
+      </div>
+      <hr>
+      <div class="follow-you">
+        <a class="btn btn-light-blue btn-menu" href="javascript:backb();">戻る</a>
+        <h2 id="bottom-h2" class="overflow-text">▲あなたがフォローしている人たち Page:1</h2>
+        <a class="btn btn-light-blue btn-menu" href="javascript:nextb();">進む</a>
       </div>
     </section>
   </div>

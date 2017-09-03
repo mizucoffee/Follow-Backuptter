@@ -1,7 +1,7 @@
 {
   "server": {
     "name": "ふぉろーばっくあっぷったーβ",
-    "version": "0.1.2",
+    "version": "0.2.0",
     "domain": "localhost",
     "port": 3000,
     "session_secret": "Your Session Secret"

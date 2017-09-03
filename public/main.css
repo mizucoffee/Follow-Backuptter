@@ -1,5 +1,5 @@
 body{
-  margin: 24px 16px;
+  margin: 24px 16px 48px 16px;
   text-align: center;
   background-image: url("../back.png");
   background-repeat: repeat;
@@ -43,6 +43,10 @@ a:hover {
 .btn:active {
   top: 3px;
   box-shadow: none;
+}
+
+.btn-menu{
+  width: 40px;
 }
 
 .btn-blue { background-color: #3D7EEF; }
@@ -97,6 +101,7 @@ footer a {
 
 .user img{
   width: 128px;
+  margin: 8px;
 }
 
 #user-name{
@@ -111,24 +116,25 @@ footer a {
   text-overflow: ellipsis;  
 }
 
-.box{
-  float: left;
+.follow-you .overflow-text{
+  width: calc(100% - 160px);
 }
 
 .boxContainer{
   margin: 16px 0;
   height: 48px;
-  overflow: hidden;
+  display: flex;
+  justify-content: flex-start;
 }
 
-.boxContainer:before,
-.boxContainer:after {
-  content: "";
-  display: table;
+.follow-you{
+  height: 48px;
+  display: flex;
+  justify-content: space-between;
 }
- 
-.boxContainer:after {
-  clear: both;
+
+.follow-you .btn{
+  line-height: 29px;
 }
 
 .text-float{
