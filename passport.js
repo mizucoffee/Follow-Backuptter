@@ -20,7 +20,7 @@ passport.deserializeUser(function(id, done) {
 passport.use(new TwitterStrategy({
     consumerKey: config.get('api-keys.twitter.ck'),
     consumerSecret: config.get('api-keys.twitter.cs'),
-    callbackURL: `http://${config.get('server.domain')}:${config.get('server.port')}/auth/twitter/callback`
+    callbackURL: `http://${config.get('server.domain')}/auth/twitter/callback`
   },
   function(token, tokenSecret, profile, done) {    
     profile.token = token;
