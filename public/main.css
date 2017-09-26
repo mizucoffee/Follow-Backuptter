@@ -58,6 +58,20 @@ a:hover {
 .btn-light-blue { background-color: #1DA4BA; }
 .btn-light-blue:hover { background-color: #116C7B; }
 
+.btn-disable {
+  background-color: #838383; 
+  pointer-events: none;
+}
+
+.btn-disable:hover { 
+  background-color: #838383; 
+  text-decoration: none;
+}
+.btn-disable:active {
+  top: 0px;
+  box-shadow: none;
+}
+
 main{width: 100%;}
 
 section {

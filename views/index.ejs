@@ -9,6 +9,7 @@
   <link rel="canonical" href="http://hiya.mizucoffee.net/">
   <link href="https://fonts.googleapis.com/earlyaccess/notosansjapanese.css" rel="stylesheet" />
   <link rel="stylesheet" href="/main.css">
+  <link rel="stylesheet" href="/modal.css">
   <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
     crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/superagent/3.6.0/superagent.min.js"></script>
@@ -40,17 +41,17 @@
     <a class="btn btn-blue" href="/api/logout">ログアウト</a>
     <section id="top">
       <div class="follow-you">
-        <a class="btn btn-light-blue btn-menu" href="javascript:back();">戻る</a>
+        <a id="topBackBtn" class="btn btn-light-blue btn-menu" href="javascript:back();">戻る</a>
         <h2 id="top-h2" class="overflow-text">▼あなたがフォローしている人たち Page:1</h2>
-        <a class="btn btn-light-blue btn-menu" href="javascript:next();">進む</a>
+        <a id="topNextBtn" class="btn btn-light-blue btn-menu" href="javascript:next();">進む</a>
       </div>
       <div id="text">
       </div>
       <hr>
       <div class="follow-you">
-        <a class="btn btn-light-blue btn-menu" href="javascript:backb();">戻る</a>
+        <a id="btmBackBtn" class="btn btn-light-blue btn-menu" href="javascript:backb();">戻る</a>
         <h2 id="bottom-h2" class="overflow-text">▲あなたがフォローしている人たち Page:1</h2>
-        <a class="btn btn-light-blue btn-menu" href="javascript:nextb();">進む</a>
+        <a id="btmNextBtn"class="btn btn-light-blue btn-menu" href="javascript:nextb();">進む</a>
       </div>
     </section>
   </div>
@@ -58,6 +59,18 @@
     <div id="loading-back"></div>
     <div id="loading-window">
       <img src="/gif-load.gif" /><br> 読み込み中
+    </div>
+  </div>
+  <div class="modal">
+    <input id="modal-trigger-center" class="checkbox" type="checkbox">
+    <div class="modal-overlay">
+      <div class="modal-wrap a-center">
+        <h2>エラー</h2>
+        <p>エラーが発生しました。ログインし直して下さい。</p>
+        <a href="/">
+          <h2>閉じる</h2>
+        </a>
+      </div>
     </div>
   </div>
   <a href="https://github.com/kawakawaritsuki/follow-backuptter"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>

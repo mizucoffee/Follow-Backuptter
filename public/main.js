@@ -22,41 +22,59 @@ window.onload = function () {
 };
 
 function next() {
-  if (nowPages >= pages) { alert("これ以上ありません"); return; }
+  if(nowPages >= pages) return;
   $("#loading").fadeIn();
   load(++nowPages - 1);
   document.getElementById("top-h2").innerText = "▼あなたがフォローしている人たち Page:" + nowPages;
   document.getElementById("bottom-h2").innerText = "▲あなたがフォローしている人たち Page:" + nowPages;
+  checkBtn();
 }
 
 function back() {
-  if (nowPages <= 1) { alert("これ以上ありません"); return; }
+  if(nowPages <= 1) return;
   $("#loading").fadeIn();
   load(--nowPages - 1);
   document.getElementById("top-h2").innerText = "▼あなたがフォローしている人たち Page:" + nowPages;
   document.getElementById("bottom-h2").innerText = "▲あなたがフォローしている人たち Page:" + nowPages;
+  checkBtn();
+}
+
+function checkBtn() {
+  if (nowPages <= 1) {
+    document.getElementById("topBackBtn").className = "btn btn-menu btn-disable";
+    document.getElementById("btmBackBtn").className = "btn btn-menu btn-disable";
+  } else {
+    document.getElementById("topBackBtn").className = "btn btn-light-blue btn-menu";
+    document.getElementById("btmBackBtn").className = "btn btn-light-blue btn-menu";
+  }
+  if (nowPages >= pages) {
+    document.getElementById("topNextBtn").className = "btn btn-menu btn-disable";
+    document.getElementById("btmNextBtn").className = "btn btn-menu btn-disable";
+  } else { 
+    document.getElementById("topNextBtn").className = "btn btn-light-blue btn-menu";
+    document.getElementById("btmNextBtn").className = "btn btn-light-blue btn-menu";
+  }
 }
 
 function nextb() {
-  if (nowPages >= pages) { alert("これ以上ありません"); return; }
-  $("#loading").fadeIn();
-  load(++nowPages - 1);
-  document.getElementById("top-h2").innerText = "▼あなたがフォローしている人たち Page:" + nowPages;
-  document.getElementById("bottom-h2").innerText = "▲あなたがフォローしている人たち Page:" + nowPages;
+  if(nowPages >= pages) return;
+  next();
   location.hash = ""; location.hash = "top";
 }
 
 function backb() {
-  if (nowPages <= 1) { alert("これ以上ありません"); return; }
-  $("#loading").fadeIn();
-  load(--nowPages - 1);
-  document.getElementById("top-h2").innerText = "▼あなたがフォローしている人たち Page:" + nowPages;
-  document.getElementById("bottom-h2").innerText = "▲あなたがフォローしている人たち Page:" + nowPages;
+  if(nowPages <= 1) return;
+  back();
   location.hash = ""; location.hash = "top";
 }
 
 function loadcheck(err, res) {
   if (err || res.body.length != length) {
+    if (res.statusCode == 403) {
+      document.getElementById("checkbox").checked = true;
+      $("#loading").fadeOut();
+      return;
+    }
     setTimeout(() => {
       superagent.get("/api/get-length").end(loadcheck);
     }, 1000);
@@ -71,6 +89,11 @@ function loadcheck(err, res) {
 function load(page) {
   var process = function (err, res) {
     if (err) {
+      if (res.statusCode == 403) {
+        document.getElementById("modal-trigger-center").checked = true;
+        $("#loading").fadeOut();
+        return;
+      }
       setTimeout(() => {
         superagent.get("/api/list?page=" + page).end(process);
       }, 1000);
@@ -95,6 +118,8 @@ function load(page) {
       document.getElementById("text").appendChild(container);
 
       $("#loading").fadeOut();
+      
+      checkBtn();
     });
   };
   superagent.get("/api/list?page=" + page).end(process);
@@ -114,7 +139,7 @@ function csv() {
     .end(function (err, res) {
       if (err) { alert("取得が終了していません。"); $("#loading").fadeOut(); return; }
       var data = "data:text/csv;charset=utf-8,\u{feff}" + res.text;
-      if ( ~navigator.userAgent.indexOf("Windows") ) {
+      if (~navigator.userAgent.indexOf("Windows")) {
         data = data.replace(/\n/g, "\r\n").replace(/\r\r/g, "\r")
       }
 
@@ -124,7 +149,7 @@ function csv() {
       link.setAttribute("href", encodeURI(data));
       link.setAttribute("download", "follow_list.csv");
       link.click();
-      
+
       $("#loading").fadeOut();
     });
 }
