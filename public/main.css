@@ -129,6 +129,7 @@ footer a {
 .user img{
   width: 128px;
   margin: 8px;
+  border-radius:50%;
 }
 
 #user-name{
