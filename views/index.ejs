@@ -27,6 +27,12 @@
   </h1>
   <div class="main">
 
+    <div class="share">
+      <a href="https://twitter.com/share?text=ふぉろーばっぷあっぷったーβ&via=kawakawaritsuki&url=http%3A%2F%2Ffollow-backup.mizucoffee.net%2F"
+        class="btn btn-tweet">Twitterでシェア</a>
+      <a href="https://twitter.com/intent/tweet?original_referer=https%3A%2F%2Fabout.twitter.com%2Fja%2Fresources%2Fbuttons&ref_src=twsrc%5Etfw&related=kawakawaritsuki&screen_name=kawakawaritsuki&tw_p=tweetbutton"
+        class="btn btn-tweet">バグ報告・意見・ご要望等を作者に言う</a>
+    </div>
     <section class="user">
       <h2>あなたの情報</h2>
       <img id="user-img" />
@@ -39,6 +45,7 @@
     <a class="btn btn-green" href="javascript:csv();">CSV形式でダウンロード</a><br>
     <a class="btn btn-light-blue" href="javascript:reload();">再取得</a><br>
     <a class="btn btn-blue" href="/api/logout">ログアウト</a>
+
     <section id="top">
       <div class="follow-you">
         <a id="topBackBtn" class="btn btn-light-blue btn-menu" href="javascript:back();">戻る</a>
@@ -51,7 +58,7 @@
       <div class="follow-you">
         <a id="btmBackBtn" class="btn btn-light-blue btn-menu" href="javascript:backb();">戻る</a>
         <h2 id="bottom-h2" class="overflow-text">▲あなたがフォローしている人たち Page:1</h2>
-        <a id="btmNextBtn"class="btn btn-light-blue btn-menu" href="javascript:nextb();">進む</a>
+        <a id="btmNextBtn" class="btn btn-light-blue btn-menu" href="javascript:nextb();">進む</a>
       </div>
     </section>
   </div>
@@ -66,10 +73,9 @@
     <div class="modal-overlay">
       <div class="modal-wrap a-center">
         <h2>エラー</h2>
-        <p>エラーが発生しました。ログインし直して下さい。</p>
-        <a href="/">
-          <h2>閉じる</h2>
-        </a>
+        <p>処理中に問題が発生しました。ログインし直して下さい。</p>
+        <p id="code" style="color: #cc0000;"></p>
+        <a id="btmBackBtn" class="btn btn-blue" href="/">トップに戻る</a>
       </div>
     </div>
   </div>

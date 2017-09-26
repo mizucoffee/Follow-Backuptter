@@ -72,6 +72,7 @@ function loadcheck(err, res) {
   if (err || res.body.length != length) {
     if (res.statusCode == 403) {
       document.getElementById("checkbox").checked = true;
+      document.getElementById("Code: ").innerText = "Code: 403";
       $("#loading").fadeOut();
       return;
     }
@@ -91,6 +92,7 @@ function load(page) {
     if (err) {
       if (res.statusCode == 403) {
         document.getElementById("modal-trigger-center").checked = true;
+        document.getElementById("Code: ").innerText = "Code: 403";
         $("#loading").fadeOut();
         return;
       }

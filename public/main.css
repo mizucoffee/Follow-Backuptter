@@ -5,6 +5,10 @@ body{
   background-repeat: repeat;
 }
 
+.share{
+  text-align: center;
+}
+
 h1{
   text-align: center;
   font-family: "Noto Sans Japanese";
@@ -57,6 +61,15 @@ a:hover {
 
 .btn-light-blue { background-color: #1DA4BA; }
 .btn-light-blue:hover { background-color: #116C7B; }
+
+.btn-tweet { 
+  border-radius: 4px;
+  background-color: #1b95e0; 
+  font-size: 14px;
+  line-height: 26px;
+  padding: 6px 8px;
+}
+.btn-tweet:hover { background-color: #0c7abf; }
 
 .btn-disable {
   background-color: #838383; 
