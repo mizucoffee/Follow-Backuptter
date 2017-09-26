@@ -161,6 +161,10 @@ footer a {
   justify-content: space-between;
 }
 
+.boxContainer img{
+  border-radius:50%;
+}
+
 .follow-you .btn{
   line-height: 29px;
 }
