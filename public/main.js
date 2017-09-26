@@ -30,7 +30,7 @@ function next() {
 }
 
 function back() {
-  if (nowPages <= 0) { alert("これ以上ありません"); return; }
+  if (nowPages <= 1) { alert("これ以上ありません"); return; }
   $("#loading").fadeIn();
   load(--nowPages - 1);
   document.getElementById("top-h2").innerText = "▼あなたがフォローしている人たち Page:" + nowPages;
@@ -47,7 +47,7 @@ function nextb() {
 }
 
 function backb() {
-  if (nowPages <= 0) { alert("これ以上ありません"); return; }
+  if (nowPages <= 1) { alert("これ以上ありません"); return; }
   $("#loading").fadeIn();
   load(--nowPages - 1);
   document.getElementById("top-h2").innerText = "▼あなたがフォローしている人たち Page:" + nowPages;

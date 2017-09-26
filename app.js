@@ -22,7 +22,7 @@ const server = app.listen(process.env.PORT || config.get('server.port'), functio
   console.log("Node.js is listening to PORT:" + server.address().port);
 });
 
-// ==========================================================
+// ======================================================================================================================================
 
 app.get("/", function (req, res, next) {
   res.render("login", { "name": config.get("server.name"), "ver": config.get("server.version") });
@@ -32,28 +32,20 @@ app.get("/login", function (req, res) {
   if (req.isAuthenticated()) { res.redirect("/list"); } else { res.redirect("/auth/twitter") }
 });
 
-app.get('/auth/twitter', passport.authenticate('twitter'));
-
-app.get('/auth/twitter/callback', passport.authenticate('twitter', { successRedirect: '/list', failureRedirect: '/' }));
-
 app.get('/list', function (req, res) {
   if (!req.isAuthenticated()) { res.redirect("/"); return; }
   res.render("index", { "name": config.get("server.name"), "ver": config.get("server.version") });
 });
 
-app.get('/api/list', function (req, res) {
-  if (!req.isAuthenticated()) { res.status(403).send('Loading').end(); return; }
+// ======================================================================================================================================
 
-  if (!req.session.list && !req.session.loading) { res.status(404).send('Not loaded').end(); return; } // hasn't list
-  if (!req.query.page) { res.status(400).send('Need query "page"').end(); return; } // not found query page
-  if (isNaN(parseInt(req.query.page)) || parseInt(req.query.page) < 0) { res.status(400).send('Bad query "page"').end(); return; } // bad query page
-  if (Math.ceil(req.user._json.friends_count / 100) <= parseInt(req.query.page)) { res.status(400).send('Out of bounds "page"').end(); return; } // bad query page
-  if (req.session.list.length == 0 || req.session.list.length - 1 < parseInt(req.query.page)) { res.status(400).send('Not loaded page').end(); return; } // bad query page
+app.get('/auth/twitter', passport.authenticate('twitter'));
 
-  res.status(200).send(req.session.list[req.query.page]).end();
-});
+app.get('/auth/twitter/callback', passport.authenticate('twitter', { successRedirect: '/list', failureRedirect: '/' }));
 
-//next_cursor
+// ======================================================================================================================================
+
+
 
 app.get('/api/load', function (req, res) {
   if (!req.isAuthenticated()) { res.status(403).send('Loading').end(); return; }
@@ -69,36 +61,36 @@ app.get('/api/load', function (req, res) {
     access_token_key: req.user.token,
     access_token_secret: req.user.tokenSecret,
   });
+
   var cursor = -1;
   var users = [];
   req.session.list = [];
   req.session.getLength = 0;
 
   var getLookup = function (client, users) {
-    var b = users.length, cnt = 100, newArr = [];
+    // 下6行でslicedArrayに100件ずつにデータを分ける
+    var b = users.length, cnt = 100, slicedArray = [];
     for (var i = 0; i < Math.ceil(b / cnt); i++) {
       var j = i * cnt;
       var p = users.slice(j, j + cnt);
-      newArr.push(p);
+      slicedArray.push(p);
     }
 
-    var process = []
+    var lookupProcesses = []
 
     var i = 0;
-    newArr.forEach(function (element, index, array) {
-      process.push(function (callback) {
+    slicedArray.forEach(function (element, index, array) {
+      lookupProcesses.push(function (callback) {
         client.get('users/lookup', { "stringify_ids": true, "user_id": element.join(',') }, function (e, d, r) {
           req.session.list.push(d);
           req.session.getLength += d.length;
           req.session.save();
-
-          console.log("push " + ++i + " " + d.length);
           callback(e, d);
         });
       });
     });
 
-    async.series(process, function (err, results) {
+    async.series(lookupProcesses, function (err, results) {
       req.session.loading = false;
       req.session.save();
       if (err) throw err;
@@ -106,8 +98,8 @@ app.get('/api/load', function (req, res) {
   }
 
   var getIds = function (client, cursor, users, done) {
-    client.get('friends/ids', { "screen_name": "parusy168", "stringify_ids": true, "cursor": cursor }, function (error, data, response) {
-    // client.get('friends/ids', { "stringify_ids": true, "cursor": cursor }, function (error, data, response) {
+    // client.get('friends/ids', { "screen_name": "parusy168", "stringify_ids": true, "cursor": cursor }, function (error, data, response) {
+    client.get('friends/ids', { "stringify_ids": true, "cursor": cursor }, function (error, data, response) {
       if (!error) {
         console.log("GET IDS " + data.ids.length);
         Array.prototype.push.apply(users, data.ids);
@@ -116,17 +108,11 @@ app.get('/api/load', function (req, res) {
     });
   };
 
-  var done = function (u, c) {
-    cursor = c;
-    users = u;
-    console.log("next_cursor:" + c);
-
-    if (c == 0) {
-      console.log("START LOOKUP");
+  var done = function (users, cursor) {
+    if (cursor == 0)
       getLookup(client, users);
-    } else {
+    else
       getIds(client, cursor, users, done);
-    }
   };
 
   getIds(client, cursor, users, done);
@@ -134,17 +120,33 @@ app.get('/api/load', function (req, res) {
   res.status(200).send('Load start').end();
 });
 
+// 現在取得出来ている件数/ページ数を返す クライアント側の判断で使う
 app.get('/api/get-length', function (req, res) {
   if (!req.isAuthenticated()) { res.status(403).send('Loading').end(); return; }
   if (!req.session.hasOwnProperty("list")) { res.status(404).end(); return; }
   res.send({ "length": req.session.getLength, "pages": req.session.list.length });
 });
 
+// 自分の情報を返す ただの見た目
 app.get('/api/user-data', function (req, res) {
   if (!req.isAuthenticated()) { res.status(403).send('Loading').end(); return; }
   res.send(req.user._json);
 });
 
+// 一覧をJSONで返す
+app.get('/api/list', function (req, res) {
+  if (!req.isAuthenticated()) { res.status(403).send('Loading').end(); return; }
+
+  if (!req.session.list && !req.session.loading) { res.status(404).send('Not loaded').end(); return; } // hasn't list
+  if (!req.query.page) { res.status(400).send('Need query "page"').end(); return; } // not found query page
+  if (isNaN(parseInt(req.query.page)) || parseInt(req.query.page) < 0) { res.status(400).send('Bad query "page"').end(); return; } // bad query page
+  if (Math.ceil(req.user._json.friends_count / 100) <= parseInt(req.query.page)) { res.status(400).send('Out of bounds "page"').end(); return; } // bad query page
+  if (req.session.list.length == 0 || req.session.list.length - 1 < parseInt(req.query.page)) { res.status(400).send('Not loaded page').end(); return; } // bad query page
+
+  res.status(200).send(req.session.list[req.query.page]).end();
+});
+
+// 一覧をCSVで返す
 app.get('/api/csv', function (req, res) {
   if (!req.isAuthenticated()) { res.status(403).send('Loading').end(); return; }
   if (req.session.loading) { res.status(406).send('Loading').end(); return; }
@@ -156,7 +158,6 @@ app.get('/api/csv', function (req, res) {
       csv = csv + user.name + "," + user.screen_name + "," + user.id + "\r\n";
     });
   });
-  // res.setHeader('Content-disposition', 'attachment; filename=follow_list.csv');
   res.setHeader('Content-type', 'text/csv; charset=utf-8');
   res.send(csv);
 });
