@@ -9,7 +9,7 @@ window.onload = function () {
       if (!!err) { console.log("error"); }
       document.getElementById("user-name").innerHTML = res.body.name;
       document.getElementById("user-screen_name").innerHTML = "@" + res.body.screen_name;
-      document.getElementById("user-img").src = res.body.profile_image_url.replace(/_normal/g, "");
+      document.getElementById("user-img").src = res.body.profile_image_url_https.replace(/_normal/g, "");
       document.getElementById("follow-count").innerText = "フォロー数: " + res.body.friends_count + "件";
       length = res.body.friends_count;
       pages = Math.ceil(length / 100);
@@ -107,7 +107,7 @@ function load(page) {
       var boxf = document.createElement('div');
       var img = document.createElement('img');
 
-      img.src = user.profile_image_url;
+      img.src = user.profile_image_url_https;
       boxf.innerHTML = user.name + ' by <a href="https://twitter.com/' + user.screen_name + '/">@' + user.screen_name + "</a> id:" + user.id;
       boxf.classList.add("overflow-text");
       boxf.classList.add("text-float");
